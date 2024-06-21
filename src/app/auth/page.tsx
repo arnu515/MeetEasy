@@ -16,7 +16,7 @@ export default function AuthPage({
 
   return (
     <div className="fixed w-full h-full top-0 left-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_1.5fr] xl:grid-cols-[1fr_2fr`]">
-      <div className="flex items-center justify-center px-6">
+      <form className="flex items-center justify-center px-6" method="POST">
         <div className="flex flex-col gap-6 min-w-[300px]">
           <div className="grid gap-2 text-center">
             <h1 className="text-3xl font-bold">
@@ -69,7 +69,7 @@ export default function AuthPage({
             </div>
           </div>
         </div>
-      </div>
+      </form>
       <div className="hidden bg-muted md:block"></div>
     </div>
   );
