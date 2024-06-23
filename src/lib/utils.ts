@@ -17,7 +17,7 @@ export function getTimeZoneOffset(argOffsetMin?: number) {
 	// flip the signs, since UTC is checked against local, not the other way around
 	if (offsetMin < 0) offset += "+"
 	else offset += "-"
-	offset += `${offsetHours}:${(Math.abs(offsetMin) - (offsetHours * 60)).toString().padStart(2, '0')}`
+	offset += `${offsetHours.toString().padStart(2, '0')}:${(Math.abs(offsetMin) - (offsetHours * 60)).toString().padStart(2, '0')}`
 	return offset
 }
 
