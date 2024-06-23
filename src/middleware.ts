@@ -12,7 +12,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
 	matcher: [
-		// match paths NOT starting with /_next/static, /_next/image, /favicon.ico, /auth, or /api
-		{ source: '/((?!_next/static|_next/image|favicon.ico|api|auth).*)' }
+		// match paths NOT starting with /_next/static, /_next/image, /favicon.ico, /auth, /meeting, or /api
+		{ source: '/((?!_next/static|_next/image|favicon.ico|api|auth|meeting).*)' }
 	]
 }
