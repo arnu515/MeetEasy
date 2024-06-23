@@ -1,5 +1,6 @@
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import Form from './Form'
+import { Badge } from '@/components/ui/badge'
 
 export default function NewPage() {
 	return (
@@ -10,6 +11,22 @@ export default function NewPage() {
 					<CardDescription>Create a new meeting</CardDescription>
 				</CardHeader>
 				<Form />
+			</Card>
+			<Card className="mx-auto mt-6 max-w-[500px]">
+				<CardHeader>
+					<CardTitle>Make a Phone Call</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<div>
+						Alternatively, you can also call{' '}
+						<Badge variant="secondary">
+							<a href={`tel:${process.env.TWILIO_PHONE_NUMBER}`}>
+								{process.env.TWILIO_PHONE_NUMBER}
+							</a>
+						</Badge>{' '}
+						to create a meeting using your phone.
+					</div>
+				</CardContent>
 			</Card>
 		</div>
 	)
