@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm'
 import { index, interval, pgTable, text, timestamp, unique } from 'drizzle-orm/pg-core'
 
 export const users = pgTable('users', {
@@ -7,6 +8,10 @@ export const users = pgTable('users', {
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	lastLoginIp: text('last_login_ip')
 })
+export const usersRelations = relations(users, ({many}) => ({
+	meetings: many(meetings),
+	meetingInvites: many(meetingInvites)
+}))
 
 export const meetings = pgTable(
 	'meetings',
@@ -28,6 +33,13 @@ export const meetings = pgTable(
 		}
 	}
 )
+export const meetingsRelations = relations(meetings, ({one, many}) => ({
+	owner: one(users, {
+		fields: [meetings.ownerId],
+		references: [users.id]
+	}),
+	invites: many(meetingInvites)
+}))
 
 export const meetingInvites = pgTable(
 	'meeting_invites',
@@ -50,3 +62,13 @@ export const meetingInvites = pgTable(
 		uniqueEmailInviteConstraint: unique().on(tbl.email, tbl.meetingId)
 	})
 )
+export const meetingInvitesRelations = relations(meetingInvites, ({one}) => ({
+	meeting: one(meetings, {
+		fields: [meetingInvites.meetingId],
+		references: [meetings.id]
+	}),
+	inviter: one(users, {
+		fields: [meetingInvites.invitedBy],
+		references: [users.id]
+	})
+}))
