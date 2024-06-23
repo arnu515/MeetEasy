@@ -20,8 +20,8 @@ export default function NewPage() {
 					<div>
 						Alternatively, you can also call{' '}
 						<Badge variant="secondary">
-							<a href={`tel:${process.env.TWILIO_PHONE_NUMBER}`}>
-								{process.env.TWILIO_PHONE_NUMBER}
+							<a href={`tel:${process.env.NEXT_PUBLIC_TWILIO_PHONE_NUMBER}`}>
+								{process.env.NEXT_PUBLIC_TWILIO_PHONE_NUMBER}
 							</a>
 						</Badge>{' '}
 						to create a meeting using your phone.
