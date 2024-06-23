@@ -217,7 +217,7 @@ export async function checkCode(_: unknown, fd: FormData): Promise<Err | { succe
 
 		// Validation success, sign the user in
 		try {
-			let user = (await db.query.users.findFirst({ where: eq(users.phone, data.To) })) ?? null
+			let user = (await db.query.users.findFirst({ where: eq(users.phone, data.to) })) ?? null
 			if (!user) {
 				// user does not exist, create them
 				user = firstOrNull(
@@ -225,7 +225,7 @@ export async function checkCode(_: unknown, fd: FormData): Promise<Err | { succe
 						.insert(users)
 						.values({
 							id: ulid(),
-							phone: data.To,
+							phone: data.to,
 							lastLoginIp: ip()
 						})
 						.returning()
@@ -241,6 +241,7 @@ export async function checkCode(_: unknown, fd: FormData): Promise<Err | { succe
 			revalidatePath('/', 'page')
 			redirect(next)
 		} catch (e) {
+			if ((e as Error).message === NEXT_REDIRECT_ERROR_MESSAGE) throw e
 			console.error(e)
 			return {
 				success: false,
