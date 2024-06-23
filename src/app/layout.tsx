@@ -25,13 +25,13 @@ export const metadata: Metadata = {
 };
 
 function changeTheme() {
-  const toDark = window.matchMedia("(prefers-color-scheme: dark)").matches
-  let theme = localStorage.getItem("theme")
+  const toDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  let theme = localStorage.getItem("theme");
   if (!theme) {
-    theme = toDark ? 'dark' : 'light'
+    theme = toDark ? "dark" : "light";
   }
-  if (theme === 'dark') document.documentElement.classList.add('dark')
-  else document.documentElement.classList.remove('dark')
+  if (theme === "dark") document.documentElement.classList.add("dark");
+  else document.documentElement.classList.remove("dark");
 }
 
 export default function RootLayout({
@@ -42,7 +42,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{__html: `(${changeTheme.toString()})()`}} />
+        <script
+          dangerouslySetInnerHTML={{ __html: `(${changeTheme.toString()})()` }}
+        />
       </head>
       <body
         className={cn(

@@ -53,7 +53,7 @@ function OTPForm({
   sid,
   channel,
   onBack,
-  next
+  next,
 }: {
   phone: string;
   sid: string;
@@ -262,19 +262,19 @@ function PhoneNumberOrEmailForm({
 }
 
 export default function AuthPage() {
-  const sp = useSearchParams()
-  const isEmail = sp.has("email")
+  const sp = useSearchParams();
+  const isEmail = sp.has("email");
   const [data, setData] = useState<Data | undefined>();
-  const [next, setNext] = useState(sp.get('next') || "/")
+  const [next, setNext] = useState(sp.get("next") || "/");
 
   useEffect(() => {
-    let nextToSet = sp.get('next') || "/"
-    const url = new URL(window.location.href)
-    const newUrl = new URL(nextToSet, url.origin)
-    if (newUrl.origin !== url.origin) nextToSet = "/"
-    else nextToSet = newUrl.pathname
-    setNext(nextToSet)
-  }, [sp])
+    let nextToSet = sp.get("next") || "/";
+    const url = new URL(window.location.href);
+    const newUrl = new URL(nextToSet, url.origin);
+    if (newUrl.origin !== url.origin) nextToSet = "/";
+    else nextToSet = newUrl.pathname;
+    setNext(nextToSet);
+  }, [sp]);
 
   return (
     <div className="fixed w-full h-full top-0 left-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_1.5fr] xl:grid-cols-[1fr_2fr`]">

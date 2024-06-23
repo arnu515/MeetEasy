@@ -161,8 +161,11 @@ export async function checkCode(
     };
   }
 
-  let next = typeof fd.get('next') === 'string' ? fd.get("next") as string || "/" : "/"
-  if (!next.startsWith('/') || next.startsWith('//')) next = "/"
+  let next =
+    typeof fd.get("next") === "string"
+      ? (fd.get("next") as string) || "/"
+      : "/";
+  if (!next.startsWith("/") || next.startsWith("//")) next = "/";
 
   // if sid and otp are testing versions, bypass twilio
   if (
@@ -176,18 +179,24 @@ export async function checkCode(
         error_description: "You have entered the wrong code.",
       };
     try {
-      const user = await db.query.users.findFirst({where: eq(users.phone, "+123456")})
-      if (!user) throw new Error("test user is not present in db")
-      const ssn = await getSession()
-      ssn.loginAt = Date.now().toString()
-      ssn.userId = user.id
-      await ssn.save()
-      revalidatePath("/", "page")
-      redirect(next)
-    } catch(e) {
-      if ((e as Error).message === NEXT_REDIRECT_ERROR_MESSAGE) throw e
-      console.error(e)
-      return{success: false, error: "Invalid", error_description: (e as Error).message}
+      const user = await db.query.users.findFirst({
+        where: eq(users.phone, "+123456"),
+      });
+      if (!user) throw new Error("test user is not present in db");
+      const ssn = await getSession();
+      ssn.loginAt = Date.now().toString();
+      ssn.userId = user.id;
+      await ssn.save();
+      revalidatePath("/", "page");
+      redirect(next);
+    } catch (e) {
+      if ((e as Error).message === NEXT_REDIRECT_ERROR_MESSAGE) throw e;
+      console.error(e);
+      return {
+        success: false,
+        error: "Invalid",
+        error_description: (e as Error).message,
+      };
     }
   }
 
@@ -229,39 +238,50 @@ export async function checkCode(
     }
 
     console.log(data);
-    if (data.status !== "approved") return {
-      success: false,
-      error: "Invalid code",
-      error_description: "You have entered the wrong code.",
-    };
+    if (data.status !== "approved")
+      return {
+        success: false,
+        error: "Invalid code",
+        error_description: "You have entered the wrong code.",
+      };
 
     // Validation success, sign the user in
     try {
-      let user = await db.query.users.findFirst({where: eq(users.phone, data.To)}) ?? null
+      let user =
+        (await db.query.users.findFirst({ where: eq(users.phone, data.To) })) ??
+        null;
       if (!user) {
         // user does not exist, create them
-        user = firstOrNull(await db.insert(users).values({
-          id: ulid(),
-          phone: data.To,
-          lastLoginIp: ip(),
-        }).returning())
-        if (!user) throw new Error("Could not create user")
+        user = firstOrNull(
+          await db
+            .insert(users)
+            .values({
+              id: ulid(),
+              phone: data.To,
+              lastLoginIp: ip(),
+            })
+            .returning(),
+        );
+        if (!user) throw new Error("Could not create user");
       }
 
-      const ssn = await getSession()
+      const ssn = await getSession();
       ssn.userId = user.id;
-      ssn.loginAt = Date.now().toString()
-      await ssn.save()
-      
-      revalidatePath("/", "page")
-      redirect(next)
-    } catch(e) {
-      console.error(e)
-      return{success: false, error: "Could not sign you in (DB_ERROR)", error_description: (e as Error).message}
-    }
+      ssn.loginAt = Date.now().toString();
+      await ssn.save();
 
+      revalidatePath("/", "page");
+      redirect(next);
+    } catch (e) {
+      console.error(e);
+      return {
+        success: false,
+        error: "Could not sign you in (DB_ERROR)",
+        error_description: (e as Error).message,
+      };
+    }
   } catch (e) {
-    if ((e as Error).message === NEXT_REDIRECT_ERROR_MESSAGE) throw e
+    if ((e as Error).message === NEXT_REDIRECT_ERROR_MESSAGE) throw e;
     console.error(e);
     return {
       success: false,
