@@ -172,7 +172,7 @@ function PhoneNumberOrEmailForm({
 			})
 			onDone(data)
 		}
-	}, [smsState, callState, toast])
+	}, [smsState, callState, toast, onDone])
 
 	return (
 		<form action={smsAction} className="flex flex-col items-center justify-center px-6">

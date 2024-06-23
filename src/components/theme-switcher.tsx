@@ -24,7 +24,7 @@ export function ThemeSwitcher() {
 		if (theme) {
 			setTheme(theme === 'dark' ? 'dark' : 'light')
 		}
-	})
+	}, [])
 
 	function changeTheme(newTheme: string) {
 		let toSet = newTheme as typeof theme
