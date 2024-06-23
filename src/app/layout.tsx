@@ -24,13 +24,26 @@ export const metadata: Metadata = {
   description: "Use MeetEasy to schedule meetings with ease!",
 };
 
+function changeTheme() {
+  const toDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+  let theme = localStorage.getItem("theme")
+  if (!theme) {
+    theme = toDark ? 'dark' : 'light'
+  }
+  if (theme === 'dark') document.documentElement.classList.add('dark')
+  else document.documentElement.classList.remove('dark')
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{__html: `(${changeTheme.toString()})()`}} />
+      </head>
       <body
         className={cn(
           "font-sans antialiased",
