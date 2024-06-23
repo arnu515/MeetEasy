@@ -15,6 +15,8 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function SubmitButton({ text }: { text: string }) {
   const { pending } = useFormStatus();
@@ -51,11 +53,13 @@ function OTPForm({
   sid,
   channel,
   onBack,
+  next
 }: {
   phone: string;
   sid: string;
   channel: "sms" | "call";
   onBack: () => void;
+  next: string;
 }) {
   const [state, action] = useFormState(checkCode, null);
   const { toast } = useToast();
@@ -72,14 +76,6 @@ function OTPForm({
         duration: 5000,
       });
       return;
-    }
-
-    if (state.success) {
-      toast({
-        title: "Valid code",
-        description: "You have been signed-in.",
-        duration: 5000,
-      });
     }
   }, [state, toast]);
 
@@ -116,6 +112,7 @@ function OTPForm({
               </InputOTPGroup>
             </InputOTP>
             <input type="hidden" name="sid" value={sid} />
+            <input type="hidden" name="next" value={next} />
           </div>
           <SubmitButton text="Sign In" />
           <p className="text-sm text-muted text-center">
@@ -264,16 +261,20 @@ function PhoneNumberOrEmailForm({
   );
 }
 
-export default function AuthPage({
-  searchParams,
-}: {
-  searchParams: Record<string, string | string[] | undefined>;
-}) {
-  const isEmail =
-    typeof searchParams.email !== "undefined"
-      ? searchParams.email.length > 0
-      : false;
+export default function AuthPage() {
+  const sp = useSearchParams()
+  const isEmail = sp.has("email")
   const [data, setData] = useState<Data | undefined>();
+  const [next, setNext] = useState(sp.get('next') || "/")
+
+  useEffect(() => {
+    let nextToSet = sp.get('next') || "/"
+    const url = new URL(window.location.href)
+    const newUrl = new URL(nextToSet, url.origin)
+    if (newUrl.origin !== url.origin) nextToSet = "/"
+    else nextToSet = newUrl.pathname
+    setNext(nextToSet)
+  }, [sp])
 
   return (
     <div className="fixed w-full h-full top-0 left-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[1fr_1.5fr] xl:grid-cols-[1fr_2fr`]">
@@ -286,6 +287,7 @@ export default function AuthPage({
         />
       ) : (
         <OTPForm
+          next={next}
           onBack={() => {
             setData(undefined);
           }}
