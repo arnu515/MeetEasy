@@ -1,4 +1,4 @@
-"use client"
+'use client'
 
 import {
 	Card,
@@ -20,28 +20,35 @@ import type { meetings } from '@/lib/db/schema'
 import { fetchEvents } from './actions'
 import { useToast } from '@/components/ui/use-toast'
 import { ScheduledFor } from '@/components/scheduled-for'
-import {format} from "date-fns"
+import { format } from 'date-fns'
 
 const cachedFetchEvents = cache(fetchEvents)
 
-function EventCard({event: meeting}: {event: typeof meetings.$inferSelect}) {
-	return <Link href={`/meeting/${meeting.id}`} className="border rounded-lg block hover:brightness-110 mb-4 px-4 py-2">
-		<h3 className="text-lg mb-2">{meeting.title}</h3>
-		<p className="text-muted-foreground text-sm"><ScheduledFor duration={meeting.duration} /></p>
-	</Link>
+function EventCard({ event: meeting }: { event: typeof meetings.$inferSelect }) {
+	return (
+		<Link
+			href={`/meeting/${meeting.id}`}
+			className="mb-4 block rounded-lg border px-4 py-2 hover:brightness-110"
+		>
+			<h3 className="mb-2 text-lg">{meeting.title}</h3>
+			<p className="text-sm text-muted-foreground">
+				<ScheduledFor duration={meeting.duration} />
+			</p>
+		</Link>
+	)
 }
 
 export default function Home() {
-	const [date, setDate] = useState<Date|undefined>(new Date())
-	const [dayEvents, setDayEvents] = useState<typeof meetings.$inferSelect[] | null>(null)
+	const [date, setDate] = useState<Date | undefined>(new Date())
+	const [dayEvents, setDayEvents] = useState<(typeof meetings.$inferSelect)[] | null>(null)
 	const [dayEventsLoading, setDayEventsLoading] = useState(true)
-	const [otherEvents, setOtherEvents] = useState<typeof meetings.$inferSelect[] | null>(null)
-	const [otherEventsLoading, setOtherEventsLoading] = useState(true) 
-	const {toast} = useToast()
+	const [otherEvents, setOtherEvents] = useState<(typeof meetings.$inferSelect)[] | null>(null)
+	const [otherEventsLoading, setOtherEventsLoading] = useState(true)
+	const { toast } = useToast()
 
 	useEffect(() => {
 		setOtherEventsLoading(true)
-		cachedFetchEvents().then((v) => {
+		cachedFetchEvents().then(v => {
 			if (!v.success) {
 				toast({
 					title: v.error,
@@ -60,7 +67,7 @@ export default function Home() {
 	useEffect(() => {
 		if (!date) return
 		setDayEventsLoading(true)
-		cachedFetchEvents(format(date, "yyyy-MM-dd")).then((v) => {
+		cachedFetchEvents(format(date, 'yyyy-MM-dd')).then(v => {
 			if (!v.success) {
 				toast({
 					title: v.error,
@@ -75,15 +82,17 @@ export default function Home() {
 			setDayEventsLoading(false)
 		})
 	}, [date])
-	
+
 	return (
 		<div className="grid grid-cols-1 md:fixed md:h-full md:w-full md:grid-cols-2 lg:grid-cols-[1fr_1.5fr] xl:grid-cols-[1fr_2fr]">
-			<div className="flex flex-col items-center justify-center bg-muted py-10 px-4 md:py-0">
+			<div className="flex flex-col items-center justify-center bg-muted px-4 py-10 md:py-0">
 				<h1 className="mb-4 text-4xl font-bold md:hidden">Your Calendar</h1>
 				<Card>
 					<CardHeader>
 						<CardTitle>Calendar</CardTitle>
-						<CardDescription>Click on a day to view the meetings you have on that day</CardDescription>
+						<CardDescription>
+							Click on a day to view the meetings you have on that day
+						</CardDescription>
 					</CardHeader>
 					<CardContent>
 						<Calendar mode="single" fromDate={new Date()} selected={date} onSelect={setDate} />
@@ -135,23 +144,43 @@ export default function Home() {
 				<h3 className="mb-4 mt-8 flex items-center gap-4 text-2xl font-medium md:text-4xl">
 					Events on this day <Badge>2024-05-03</Badge>
 				</h3>
-				{dayEvents !== null && (dayEvents.length === 0 ? <p className="text-gray-600 dark:text-gray-300">
-					You have no events on this day.{' '}
-					<Link href="/new" className="underline">
-						Create one?
-					</Link>
-				</p> : dayEvents.map(e => <EventCard key={e.id} event={e} />))}
-				{dayEventsLoading && <p className="p-4"><Loader2Icon className="size-8 animate-spin" /><span className="sr-only">Loading...</span></p>}
+				{dayEvents !== null &&
+					(dayEvents.length === 0 ? (
+						<p className="text-gray-600 dark:text-gray-300">
+							You have no events on this day.{' '}
+							<Link href="/new" className="underline">
+								Create one?
+							</Link>
+						</p>
+					) : (
+						dayEvents.map(e => <EventCard key={e.id} event={e} />)
+					))}
+				{dayEventsLoading && (
+					<p className="p-4">
+						<Loader2Icon className="size-8 animate-spin" />
+						<span className="sr-only">Loading...</span>
+					</p>
+				)}
 				<h3 className="mb-4 mt-8 flex items-center gap-4 text-2xl font-medium md:text-4xl">
 					Other upcoming events
 				</h3>
-				{otherEvents!== null && (otherEvents.length === 0 ? <p className="text-gray-600 dark:text-gray-300">
-					You have no upcoming events.{' '}
-					<Link href="/new" className="underline">
-						Create one?
-					</Link>
-				</p> : otherEvents.map(e => <EventCard key={e.id} event={e} />))}
-				{otherEventsLoading && <p className="p-4"><Loader2Icon className="size-8 animate-spin" /><span className="sr-only">Loading...</span></p>}
+				{otherEvents !== null &&
+					(otherEvents.length === 0 ? (
+						<p className="text-gray-600 dark:text-gray-300">
+							You have no upcoming events.{' '}
+							<Link href="/new" className="underline">
+								Create one?
+							</Link>
+						</p>
+					) : (
+						otherEvents.map(e => <EventCard key={e.id} event={e} />)
+					))}
+				{otherEventsLoading && (
+					<p className="p-4">
+						<Loader2Icon className="size-8 animate-spin" />
+						<span className="sr-only">Loading...</span>
+					</p>
+				)}
 			</ScrollArea>
 		</div>
 	)

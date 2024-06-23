@@ -24,32 +24,56 @@ async function getMeeting(id: string) {
 	return meeting
 }
 
-function SignIn({id}: {id: string}) {
-	return <div className="flex flex-col gap-4 mt-6">
-		<p className="text-xl">Sign in to see if you're invited to this meeting</p>
-		<Button asChild><Link href={`/auth?next=/meeting/${id}`}>Sign in</Link></Button>
-	</div>
+function SignIn({ id }: { id: string }) {
+	return (
+		<div className="mt-6 flex flex-col gap-4">
+			<p className="text-xl">Sign in to see if you're invited to this meeting</p>
+			<Button asChild>
+				<Link href={`/auth?next=/meeting/${id}`}>Sign in</Link>
+			</Button>
+		</div>
+	)
 }
 
 function NotInvited() {
 	// <div className="flex items-center gap-2"></div>
-	return <div className="flex flex-col gap-4 mt-6">
-		<p className="text-xl">You are unfortunately not invited to this meeting.</p>
-		<Button asChild><Link href="/">Home</Link></Button>
-		<Button variant="link" asChild><Link href="/new">Create your own meeting</Link></Button>
-	</div>
+	return (
+		<div className="mt-6 flex flex-col gap-4">
+			<p className="text-xl">You are unfortunately not invited to this meeting.</p>
+			<Button asChild>
+				<Link href="/">Home</Link>
+			</Button>
+			<Button variant="link" asChild>
+				<Link href="/new">Create your own meeting</Link>
+			</Button>
+		</div>
+	)
 }
 
 export default async function MeetingID({ params: { id } }: { params: { id: string } }) {
 	const meeting = await getMeeting(id)
 	const user = await getUser()
-	const isInvited = user ? user.id === meeting.ownerId || meeting.invites.some(i => (!!i.phone && i.phone === user.phone) || (!!i.email && i.email === user.email)) : false
+	const isInvited = user
+		? user.id === meeting.ownerId ||
+			meeting.invites.some(
+				i => (!!i.phone && i.phone === user.phone) || (!!i.email && i.email === user.email)
+			)
+		: false
 
 	return (
 		<div className="mt-20 px-4">
 			<Card className="mx-auto max-w-screen-md">
 				<CardHeader>
-					<CardTitle className="flex items-center justify-between">Join meeting: {meeting.title} {user && <Button variant="ghost" size="icon" asChild><Link href="/"><HomeIcon size={20} /></Link></Button>}</CardTitle>
+					<CardTitle className="flex items-center justify-between">
+						Join meeting: {meeting.title}{' '}
+						{user && (
+							<Button variant="ghost" size="icon" asChild>
+								<Link href="/">
+									<HomeIcon size={20} />
+								</Link>
+							</Button>
+						)}
+					</CardTitle>
 					<CardDescription>
 						Meeting description: {meeting.description || <em>No description provided</em>}
 					</CardDescription>
