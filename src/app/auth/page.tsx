@@ -12,7 +12,6 @@ import { useToast } from '@/components/ui/use-toast'
 import { REGEXP_ONLY_DIGITS } from 'input-otp'
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp'
 import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation'
 
 function SubmitButton({ text }: { text: string }) {
 	const { pending } = useFormStatus()
@@ -193,7 +192,6 @@ function PhoneNumberOrEmailForm({
 							id={isEmail ? 'email' : 'tel'}
 							name={isEmail ? 'email' : 'tel'}
 							type={isEmail ? 'email' : 'tel'}
-							className="placeholder:text-muted"
 							placeholder={isEmail ? 'john.doe@example.com' : '+123 456 7890'}
 							required
 						/>
