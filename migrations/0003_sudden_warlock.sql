@@ -1,0 +1,1 @@
+ALTER TABLE "meetings" ALTER COLUMN "created_at" DROP DEFAULT;

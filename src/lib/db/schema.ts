@@ -15,8 +15,8 @@ export const meetings = pgTable(
 		title: text('title').notNull(),
 		description: text('description'),
 		createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-		scheduledAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
-		duration: interval('duration', { fields: 'hour to minute', precision: 0 }),
+		scheduledAt: timestamp('scheduled_at', { withTimezone: true }).notNull(),
+		duration: interval('duration', { fields: 'hour to minute', precision: 0 }).notNull(),
 		ownerId: text('owner_id').references(() => users.id, {
 			onDelete: 'cascade',
 			onUpdate: 'cascade'
