@@ -8,6 +8,7 @@ import { getUser } from '@/lib/user'
 import { Button } from '@/components/ui/button'
 import { HomeIcon } from 'lucide-react'
 import Link from 'next/link'
+import { ScheduledFor } from '@/components/scheduled-for'
 
 async function getMeeting(id: string) {
 	const meeting = await db.query.meetings.findFirst({
@@ -21,28 +22,6 @@ async function getMeeting(id: string) {
 	if (!meeting) notFound()
 
 	return meeting
-}
-
-function ScheduledFor({ duration }: { duration: string }) {
-	const [hour, minute] = duration.split(':')
-	const hourSpan = (
-		<span className="text-mono font-medium text-foreground">
-			{hour} hour{hour !== '01' && 's'}
-		</span>
-	)
-	const minuteSpan = (
-		<span className="text-mono font-medium text-foreground">
-			{minute} minute{minute !== '01' && 's'}
-		</span>
-	)
-
-	return (
-		<>
-			Scheduled for {hour !== '00' && hourSpan}
-			{hour !== '00' && minute !== '00' && ' and '}
-			{minute !== '0' && minuteSpan}.
-		</>
-	)
 }
 
 function SignIn({id}: {id: string}) {
