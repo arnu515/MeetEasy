@@ -36,7 +36,6 @@ function SignIn({ id }: { id: string }) {
 }
 
 function NotInvited() {
-	// <div className="flex items-center gap-2"></div>
 	return (
 		<div className="mt-6 flex flex-col gap-4">
 			<p className="text-xl">You are unfortunately not invited to this meeting.</p>
@@ -45,6 +44,26 @@ function NotInvited() {
 			</Button>
 			<Button variant="link" asChild>
 				<Link href="/new">Create your own meeting</Link>
+			</Button>
+		</div>
+	)
+}
+
+function JoinButton({ meetingId }: { meetingId: string }) {
+	// const to = new Date(from)
+	// const [h, m] = duration.split(':').map(parseInt)
+	// to.setMinutes(to.getMinutes() + m)
+	// to.setHours(to.getHours() + h)
+	// const now = new Date()
+
+	return (
+		<div className="mt-6 flex flex-col gap-4">
+			<p className="text-xl">You are invited to this meeting.</p>
+			<Button asChild>
+				<Link href={`/meeting/${meetingId}/join`}>Join meeting</Link>
+			</Button>
+			<Button variant="link" asChild>
+				<Link href="/">Home</Link>
 			</Button>
 		</div>
 	)
@@ -94,7 +113,15 @@ export default async function MeetingID({ params: { id } }: { params: { id: stri
 					{user?.id === meeting.ownerId && (
 						<Invite invites={meeting.invites} meetingId={meeting.id} />
 					)}
-					{user ? isInvited ? <p>Invited</p> : <NotInvited /> : <SignIn id={id} />}
+					{user ? (
+						isInvited ? (
+							<JoinButton meetingId={meeting.id} />
+						) : (
+							<NotInvited />
+						)
+					) : (
+						<SignIn id={id} />
+					)}
 				</CardContent>
 			</Card>
 		</div>
