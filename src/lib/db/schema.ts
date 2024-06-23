@@ -8,7 +8,7 @@ export const users = pgTable('users', {
 	createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
 	lastLoginIp: text('last_login_ip')
 })
-export const usersRelations = relations(users, ({many}) => ({
+export const usersRelations = relations(users, ({ many }) => ({
 	meetings: many(meetings),
 	meetingInvites: many(meetingInvites)
 }))
@@ -33,7 +33,7 @@ export const meetings = pgTable(
 		}
 	}
 )
-export const meetingsRelations = relations(meetings, ({one, many}) => ({
+export const meetingsRelations = relations(meetings, ({ one, many }) => ({
 	owner: one(users, {
 		fields: [meetings.ownerId],
 		references: [users.id]
@@ -62,7 +62,7 @@ export const meetingInvites = pgTable(
 		uniqueEmailInviteConstraint: unique().on(tbl.email, tbl.meetingId)
 	})
 )
-export const meetingInvitesRelations = relations(meetingInvites, ({one}) => ({
+export const meetingInvitesRelations = relations(meetingInvites, ({ one }) => ({
 	meeting: one(meetings, {
 		fields: [meetingInvites.meetingId],
 		references: [meetings.id]

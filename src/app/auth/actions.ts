@@ -116,14 +116,14 @@ export async function checkCode(_: unknown, fd: FormData): Promise<Err | { succe
 	const schema = v.object({
 		code: v.pipe(
 			v.string('Please enter your code'),
-      v.trim(),
+			v.trim(),
 			v.nonEmpty('Please enter your code'),
 			v.length(6, 'The code is 6 digits long'),
 			v.regex(/^\d{6}$/, 'The code is 6 digits long, and only contains numbers')
 		),
 		sid: v.pipe(
 			v.string('Invalid request ID'),
-      v.trim(),
+			v.trim(),
 			v.nonEmpty('Invalid request ID'),
 			v.regex(/^VE[0-9a-fA-F]{32}$/, 'Invalid request ID')
 		)

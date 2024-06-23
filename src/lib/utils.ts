@@ -13,11 +13,11 @@ export function getTimeZoneOffset(argOffsetMin?: number) {
 	const offsetMin = argOffsetMin ?? new Date().getTimezoneOffset()
 	if (offsetMin === 0) return 'UTC'
 	const offsetHours = Math.floor(Math.abs(offsetMin) / 60)
-	let offset = "UTC"
+	let offset = 'UTC'
 	// flip the signs, since UTC is checked against local, not the other way around
-	if (offsetMin < 0) offset += "+"
-	else offset += "-"
-	offset += `${offsetHours.toString().padStart(2, '0')}:${(Math.abs(offsetMin) - (offsetHours * 60)).toString().padStart(2, '0')}`
+	if (offsetMin < 0) offset += '+'
+	else offset += '-'
+	offset += `${offsetHours.toString().padStart(2, '0')}:${(Math.abs(offsetMin) - offsetHours * 60).toString().padStart(2, '0')}`
 	return offset
 }
 

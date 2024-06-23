@@ -1,8 +1,8 @@
-import * as v from "valibot"
+import * as v from 'valibot'
 
 export const phoneNumberSchema = v.pipe(
 	v.string('Please enter a phone number'),
-  v.trim(),
+	v.trim(),
 	v.transform(x => x.replaceAll(' ', '')), // remove all spaces in the string
 	v.nonEmpty('Please enter a phone number'),
 	v.maxLength(24, 'Number cannot exceed 24 chars'),
