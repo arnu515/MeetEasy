@@ -4,6 +4,7 @@ import { users } from '@/lib/db/schema'
 import ip from '@/lib/ip'
 import { getSession } from '@/lib/session'
 import { firstOrNull, NEXT_REDIRECT_ERROR_MESSAGE } from '@/lib/utils'
+import { phoneNumberSchema } from '@/lib/validation'
 import { eq } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
@@ -11,20 +12,7 @@ import { ulid } from 'ulid'
 import * as v from 'valibot'
 
 function validatePhoneNumber(num: unknown): [boolean, string] {
-	const schema = v.pipe(
-		v.string('Please enter a phone number'),
-      v.trim(),
-		v.transform(x => x.replaceAll(' ', '')), // remove all spaces in the string
-		v.nonEmpty('Please enter a phone number'),
-		v.maxLength(24, 'Number cannot exceed 24 chars'),
-		v.minLength(5, 'Number must be atleast 5 characters long.'),
-		v.regex(
-			/^\+[1-9]\d{1,14}$/,
-			'Phone number can only contain digits, and must start with the country code (with a +)'
-		) // from https://www.twilio.com/docs/glossary/what-e164
-	)
-
-	const op = v.safeParse(schema, num, { abortPipeEarly: true })
+	const op = v.safeParse(phoneNumberSchema, num, { abortPipeEarly: true })
 
 	if (!op.success) {
 		return [false, op.issues[0]?.message || 'Unknown error']
