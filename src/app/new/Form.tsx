@@ -120,12 +120,22 @@ export default function Form() {
 					/>
 				</div>
 				<div className="my-2">
-					<Label>Date of Meeting</Label>
+					<Label>
+						Date of Meeting{' '}
+						<span className="text-red-500">
+							* <span className="sr-only">required</span>
+						</span>
+					</Label>
 				</div>
 				<div className="my-2">
 					<DatePicker />
 				</div>
-				<Label className="mt-2">Time of Meeting</Label>
+				<Label className="mt-2">
+					Time of Meeting{' '}
+					<span className="text-red-500">
+						* <span className="sr-only">required</span>
+					</span>
+				</Label>
 				<div className="mb-2 flex flex-wrap items-center gap-2">
 					<Label id="from-input">From:</Label>
 					<Input type="time" id="from-input" className="w-auto" name="from" required />
@@ -134,7 +144,9 @@ export default function Form() {
 				</div>
 				<input type="hidden" name="offset" value={offset.replace('UTC', '')} />
 				<p className={cn('mt-4 text-sm', error ? 'text-red-500' : 'text-muted-foreground')}>
-					{error ? error.d || error.n : `You can invite people after creating the meeting. Dates are in your timezone. (${offset})`}
+					{error
+						? error.d || error.n
+						: `You can invite people after creating the meeting. Dates are in your timezone. (${offset})`}
 				</p>
 			</CardContent>
 			<CardFooter className="justify-between">
