@@ -15,7 +15,7 @@ export function ScheduledFor({ duration }: { duration: string }) {
 		<>
 			Scheduled for {hour !== '00' && hourSpan}
 			{hour !== '00' && minute !== '00' && ' and '}
-			{minute !== '0' && minuteSpan}.
+			{minute !== '00' && minuteSpan}.
 		</>
 	)
 }
