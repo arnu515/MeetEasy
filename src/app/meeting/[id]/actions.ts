@@ -12,14 +12,15 @@ import * as v from 'valibot'
 
 type Ret = { success: false; error: string; error_description: string } | { success: true }
 
-export async function deleteInvite(id: string): Promise<Ret> {
+export async function deleteInvite(id: string, meetingId: string): Promise<Ret> {
 	const user = await getUser()
-	if (!user) redirect('/auth')
+	if (!user) redirect('/auth?next=/meeting/' + meetingId)
 
 	try {
 		await db
 			.delete(meetingInvites)
 			.where(and(eq(meetingInvites.id, id), eq(meetingInvites.invitedBy, user.id)))
+		revalidatePath('/meeting/' + meetingId)
 		return { success: true }
 	} catch (e) {
 		return {

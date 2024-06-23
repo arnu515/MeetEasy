@@ -93,7 +93,7 @@ function InviteSomeoneDialog({ meetingId }: { meetingId: string }) {
 	)
 }
 
-function DeleteInviteButton({ id }: { id: string }) {
+function DeleteInviteButton({ id, meetingId }: { id: string, meetingId: string }) {
 	const [pending, setPending] = useState(false)
 
 	return (
@@ -105,7 +105,7 @@ function DeleteInviteButton({ id }: { id: string }) {
 			size="icon"
 			onClick={() => {
 				setPending(true)
-				deleteInvite(id).then(() => setPending(false))
+				deleteInvite(id, meetingId).then(() => setPending(false))
 			}}
 		>
 			{' '}
@@ -143,7 +143,7 @@ export default function Invite({
 								</p>
 							)}
 						</div>
-						<DeleteInviteButton id={i.id} />
+						<DeleteInviteButton id={i.id} meetingId={meetingId} />
 					</div>
 				))
 			) : (
