@@ -149,7 +149,7 @@ export default function Invite({
 			) : (
 				<p className="my-2 text-center text-muted-foreground">You have not invited anyone.</p>
 			)}
-			{invites.length <= 4 && <InviteSomeoneDialog meetingId={meetingId} />}
+			{invites.length < 3 && <InviteSomeoneDialog meetingId={meetingId} />}
 		</div>
 	)
 }

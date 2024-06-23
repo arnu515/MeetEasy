@@ -1,10 +1,10 @@
 'use server'
 
 import db from '@/lib/db'
-import { meetingInvites } from '@/lib/db/schema'
+import { meetingInvites, meetings } from '@/lib/db/schema'
 import { getUser } from '@/lib/user'
 import { emailSchema, phoneNumberSchema } from '@/lib/validation'
-import { and, eq } from 'drizzle-orm'
+import { and, count, eq, gt, lt } from 'drizzle-orm'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { ulid } from 'ulid'
@@ -75,6 +75,20 @@ export async function invite(_: unknown, fd: FormData): Promise<Ret> {
 	if (!user) redirect('/auth?next=/meeting/' + id)
 
 	try {
+		if (
+			(
+				await db
+					.select({ count: count() })
+					.from(meetingInvites)
+					.where(and(eq(meetingInvites.meetingId, id)))
+			)[0].count >= 3
+		)
+			return {
+				success: false,
+				error: 'Too many invites',
+				error_description: 'You can invite a maximum of three people only'
+			}
+
 		await db.insert(meetingInvites).values({
 			id: ulid(),
 			email,
