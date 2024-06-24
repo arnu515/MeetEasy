@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# MeetEasy
 
-## Getting Started
+This project was supposed to be submitted to the [Twilio Challenge on DEV](https://dev.to/challenges/twilio), but I unfortunately ran out of time and couldn't complete it before the deadline.
 
-First, run the development server:
+## Deployment Plan
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Host postgres and redis on a droplet, deploy frontend to vercel.
+- Twilio voice IVR would've been hosted on Twilio functions.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+These are the planned features. The ones with the checkbox were completed
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- [X] Login with phone number
+- [ ] Login with email
+- [ ] Call and place meeting
+- [X] Schedule meetings
+- [X] Join meetings
+- [ ] Publish local audio and video
+- [ ] Meeting chat with AI
+  - [ ] Image generation
+  - [ ] Chat with AI
+  - [ ] AI Summaries
+- [X] Invite to meetings
+  - [ ] Send invite via phone and email
+- [X] Dark and light themes
+- [ ] Cache with Redis
 
-## Learn More
+I could've probably finished this project if I had more time (I was only able to put in 4-5 days of work).
 
-To learn more about Next.js, take a look at the following resources:
+## Tech Stack
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+If only I didn't have analysis paralysis! I went from SvelteKit, to Go + Templ, back to SvelteKit, and finally back to Next.js
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+I don't prefer react to svelte, I just taught I'd be able to finish the project faster with Next.js, which clearly wasn't the case.
 
-## Deploy on Vercel
+- Next.js
+- TailwindCSS
+- shadcn/ui
+- DrizzleORM
+- vvo/iron-session
+- Twilio services used (and planned to use):
+  - [X] Verify
+  - [X] Video (I learnt it was deprecated the hard way)
+  - [ ] Voice
+  - [ ] SMS
+  - [ ] Sendgrid
+  - [ ] Serverless
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Local Development
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Clone the repo.
+- Install dependencies with Bun (or whatever you prefer).
+- Copy paste `.env.example` to `.env` and fill out the variables with your own.
+- `bun dev`
