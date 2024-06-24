@@ -50,12 +50,6 @@ function NotInvited() {
 }
 
 function JoinButton({ meetingId }: { meetingId: string }) {
-	// const to = new Date(from)
-	// const [h, m] = duration.split(':').map(parseInt)
-	// to.setMinutes(to.getMinutes() + m)
-	// to.setHours(to.getHours() + h)
-	// const now = new Date()
-
 	return (
 		<div className="mt-6 flex flex-col gap-4">
 			<p className="text-xl">You are invited to this meeting.</p>
